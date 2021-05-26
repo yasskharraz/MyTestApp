@@ -57,5 +57,5 @@ jobs:
             
             
       - name: Android Build
-        run: ./gradlew assembleStagingRelease --stacktrace --no-daemon
+        run: ./gradlew assembleRelease --stacktrace --no-daemon
         working-directory: ./android
