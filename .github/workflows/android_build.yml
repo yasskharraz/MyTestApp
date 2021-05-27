@@ -1,4 +1,4 @@
-name: Android Build
+name: Android Build - store
 
 # Controls when the action will run. 
 on:
@@ -47,6 +47,12 @@ jobs:
       - name: Install npm
         run: npm install
         
+      - name: Cache Gradle Wrapper
+        uses: actions/cache@v2.1.5
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+        
       - name: Caching Gradle dependencies
         uses: actions/cache@v2.1.5
         with:
@@ -55,7 +61,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-MyTestApp-
             
-            
       - name: Android Build
         run: ./gradlew assembleRelease --stacktrace --no-daemon
         working-directory: ./android
+        
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: mytestapp-releasae.apk
+          path: android/app/build/outputs/apk/release/
